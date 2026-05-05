@@ -1,60 +1,420 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TBuckley Math</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algebra 1 — Mr. Buckley</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Carlito:wght@400;700&family=Libre+Franklin:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Carlito','Calibri',sans-serif;background:#f4f1ea;color:#1a1a1a;min-height:100vh}
+.grid-bg{position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(rgba(0,0,0,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.06) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0}
+.site{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 20px 60px}
+header{padding:36px 0 28px;border-bottom:2px solid #1a1a1a;margin-bottom:32px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.class-label{font-size:12px;letter-spacing:.10em;text-transform:uppercase;color:#555;margin-bottom:6px}
+h1{font-family:'Libre Franklin',sans-serif;font-size:34px;font-weight:600;line-height:1.1;color:#1a1a1a}
+.teacher-badge{font-size:12px;background:#1a1a1a;color:#f4f1ea;padding:6px 14px;border-radius:2px;white-space:nowrap;font-weight:700;letter-spacing:.04em}
+nav{display:flex;margin-bottom:36px;border:1.5px solid #1a1a1a;border-radius:3px;overflow:hidden;background:white;flex-wrap:wrap}
+.nav-btn{flex:1;padding:10px 4px;font-family:'Carlito','Calibri',sans-serif;font-size:12px;font-weight:700;text-align:center;cursor:pointer;border:none;background:transparent;color:#1a1a1a;border-right:1px solid #ddd;transition:all .15s;min-width:80px}
+.nav-btn:last-child{border-right:none}
+.nav-btn:hover{background:#f4f1ea}
+.nav-btn.active{background:#1a1a1a;color:#f4f1ea}
+.section{display:none}
+.section.active{display:block}
+
+/* UNIT GRID */
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-bottom:28px}
+.unit-card{background:white;border:1.5px solid #1a1a1a;border-radius:3px;overflow:hidden;transition:transform .12s,box-shadow .12s;cursor:pointer;text-decoration:none;color:inherit;display:block}
+.unit-card:hover{transform:translateY(-2px);box-shadow:4px 4px 0 #1a1a1a}
+.unit-accent{height:3px}
+.a-red{background:#c0392b}.a-blue{background:#2980b9}.a-green{background:#27ae60}
+.a-orange{background:#e67e22}.a-purple{background:#8e44ad}.a-teal{background:#16a085}
+.a-navy{background:#1a3a5c}.a-brown{background:#7f5539}.a-rose{background:#c0636b}
+.a-indigo{background:#4361a8}.a-lime{background:#5a8a00}.a-coral{background:#c05a2b}
+.unit-num{font-size:11px;font-weight:700;padding:8px 14px 6px;border-bottom:1px solid #eee;color:#888;letter-spacing:.08em}
+.unit-title{font-family:'Libre Franklin',sans-serif;font-weight:600;font-size:15px;padding:10px 14px 4px}
+.unit-topics{padding:4px 14px 14px;font-size:13px;color:#666;line-height:1.6}
+
+/* SHARED */
+.sec-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#888;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #ddd}
+.rlist{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.ritem{background:white;border:1.5px solid #1a1a1a;border-radius:3px;padding:12px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background .12s;text-decoration:none;color:inherit}
+.ritem:hover{background:#fafafa}
+.rico{width:34px;height:34px;background:#1a1a1a;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#f4f1ea;flex-shrink:0}
+.rinfo{flex:1}
+.rname{font-weight:600;font-size:14px;color:#1a1a1a;margin-bottom:2px}
+.rmeta{font-size:12px;color:#888}
+.rtag{font-size:11px;padding:3px 8px;border-radius:2px;border:1px solid #ddd;color:#555;white-space:nowrap}
+
+/* FORMULAS */
+.formula-section{margin-bottom:32px}
+.formula-section-title{font-family:'Libre Franklin',sans-serif;font-weight:600;font-size:15px;margin-bottom:12px;padding:8px 14px;background:#1a1a1a;color:#f4f1ea;border-radius:3px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:8px}
+.fitem{padding:12px 14px;background:white;border:1.5px solid #1a1a1a;border-radius:3px}
+.fname{font-size:11px;color:#888;margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
+.feq{font-size:14px;font-weight:700;color:#1a1a1a;line-height:1.4}
+.fnote{font-size:11px;color:#666;margin-top:4px;line-height:1.4}
+
+/* REGENTS TABLE */
+.reg-intro{background:white;border-left:5px solid #1a3a5c;border:1.5px solid #1a3a5c;border-radius:3px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:#444;line-height:1.6}
+.reg-intro strong{color:#1a1a1a;font-weight:600}
+.club-intro{background:white;border-left:5px solid #27ae60;border:1.5px solid #27ae60;border-radius:3px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:#444;line-height:1.6}
+.club-intro strong{color:#1a1a1a;font-weight:600}
+.etable{width:100%;border-collapse:collapse;margin-bottom:28px;font-size:13px;background:white;border:1.5px solid #1a1a1a;border-radius:3px;overflow:hidden}
+.etable th{background:#1a1a1a;color:#f4f1ea;padding:10px 14px;text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.etable td{padding:10px 14px;border-bottom:1px solid #eee;vertical-align:middle}
+.etable tr:last-child td{border-bottom:none}
+.etable tr:hover td{background:#fafafa}
+.elinks{display:flex;gap:6px;flex-wrap:wrap}
+.elink{font-size:11px;font-weight:700;padding:4px 8px;border-radius:2px;text-decoration:none;border:1.5px solid;transition:all .12s;white-space:nowrap}
+.epdf{color:#1a3a5c;border-color:#1a3a5c}.epdf:hover{background:#1a3a5c;color:white}
+.eyt{color:#c0392b;border-color:#c0392b}.eyt:hover{background:#c0392b;color:white}
+.egr{color:#27ae60;border-color:#27ae60}.egr:hover{background:#27ae60;color:white}
+.epu{color:#8e44ad;border-color:#8e44ad}.epu:hover{background:#8e44ad;color:white}
+
+/* CONTACT */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.ccard{background:white;border:1.5px solid #1a1a1a;border-radius:3px;padding:20px}
+.cicon{font-size:20px;margin-bottom:10px}
+.clabel{font-size:11px;color:#888;margin-bottom:4px;letter-spacing:.06em;text-transform:uppercase}
+.cval{font-weight:600;font-size:14px;word-break:break-all}
+
+footer{margin-top:48px;padding-top:20px;border-top:2px solid #1a1a1a;font-size:11px;letter-spacing:.08em;color:#888;display:flex;justify-content:space-between}
+</style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to TBuckley Math</h1>
-        <nav>
-            <ul>
-                <li><a href="#units">Units</a></li>
-                <li><a href="#resources">Resources</a></li>
-                <li><a href="#calculator">Calculator</a></li>
-                <li><a href="#regents">Regents</a></li>
-                <li><a href="#club">Club</a></li>
-                <li><a href="#formulas">Formulas</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section id="units">
-        <h2>Units</h2>
-        <div class="unit-card">Unit 1</div>
-        <div class="unit-card">Unit 2</div>
-        <div class="unit-card">Unit 3</div>
-        <div class="unit-card">Unit 4</div>
-        <div class="unit-card">Unit 5</div>
-        <div class="unit-card">Unit 6</div>
-        <div class="unit-card">Unit 7</div>
-    </section>
-    <section id="resources">
-        <h2>Resources</h2>
-        <p>Helpful links and resources.</p>
-    </section>
-    <section id="calculator">
-        <h2>Calculator</h2>
-        <p>Interactive calculator for math problems.</p>
-    </section>
-    <section id="regents">
-        <h2>Regents</h2>
-        <p>Information about Regents exams.</p>
-    </section>
-    <section id="club">
-        <h2>Math Club</h2>
-        <p>Join our math club!</p>
-    </section>
-    <section id="formulas">
-        <h2>Formulas</h2>
-        <p>Common math formulas.</p>
-    </section>
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Contact us for more information.</p>
-    </section>
-    <script src="script.js"></script>
+<div class="grid-bg"></div>
+<div class="site">
+
+<header>
+  <div>
+    <div class="class-label">Room 427 · 2025–2026</div>
+    <h1>Algebra 1</h1>
+  </div>
+  <div class="teacher-badge">Mr. Buckley</div>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showTab('units',this)">Units</button>
+  <button class="nav-btn" onclick="showTab('resources',this)">Resources</button>
+  <button class="nav-btn" onclick="showTab('calculator',this)">Graphing Calc</button>
+  <button class="nav-btn" onclick="showTab('regents',this)">Regents</button>
+  <button class="nav-btn" onclick="showTab('club',this)">Math Club</button>
+  <button class="nav-btn" onclick="showTab('formulas',this)">Formulas</button>
+  <button class="nav-btn" onclick="showTab('contact',this)">Contact</button>
+</nav>
+
+<!-- ===== UNITS ===== -->
+<div id="units" class="section active">
+  <div class="sec-label">Course Units</div>
+  <div class="unit-grid">
+
+    <a href="unit_01.html" class="unit-card">
+      <div class="unit-accent a-red"></div>
+      <div class="unit-num">UNIT 01 · Ch. 1</div>
+      <div class="unit-title">Foundations for Algebra</div>
+      <div class="unit-topics">Variables &amp; expressions · Adding, subtracting, multiplying &amp; dividing real numbers · Powers &amp; exponents · Roots &amp; real numbers · Order of operations · Simplifying expressions · Introduction to functions</div>
+    </a>
+
+    <a href="unit_02.html" class="unit-card">
+      <div class="unit-accent a-blue"></div>
+      <div class="unit-num">UNIT 02 · Ch. 2</div>
+      <div class="unit-title">Equations</div>
+      <div class="unit-topics">One-step equations · Two-step &amp; multi-step equations · Equations with variables on both sides · Solving for a variable · Absolute-value equations · Rates, ratios &amp; proportions</div>
+    </a>
+
+    <a href="unit_03.html" class="unit-card">
+      <div class="unit-accent a-green"></div>
+      <div class="unit-num">UNIT 03 · Ch. 3</div>
+      <div class="unit-title">Inequalities</div>
+      <div class="unit-topics">Graphing &amp; writing inequalities · One-step inequalities · Two-step &amp; multi-step inequalities · Inequalities with variables on both sides · Compound inequalities · Absolute-value inequalities</div>
+    </a>
+
+    <a href="unit_04.html" class="unit-card">
+      <div class="unit-accent a-orange"></div>
+      <div class="unit-num">UNIT 04 · Ch. 4</div>
+      <div class="unit-title">Functions</div>
+      <div class="unit-topics">Graphing relationships · Relations &amp; functions · Vertical-line test · Writing &amp; graphing functions · Scatter plots &amp; trend lines · Arithmetic sequences</div>
+    </a>
+
+    <a href="unit_05.html" class="unit-card">
+      <div class="unit-accent a-purple"></div>
+      <div class="unit-num">UNIT 05 · Ch. 5</div>
+      <div class="unit-title">Linear Functions</div>
+      <div class="unit-topics">Identifying linear functions · Using intercepts · Rate of change &amp; slope · The slope formula · Distance &amp; midpoint formulas · Direct variation · Slope-intercept form · Point-slope form · Parallel &amp; perpendicular lines</div>
+    </a>
+
+    <a href="unit_06.html" class="unit-card">
+      <div class="unit-accent a-teal"></div>
+      <div class="unit-num">UNIT 06 · Ch. 6</div>
+      <div class="unit-title">Systems of Equations &amp; Inequalities</div>
+      <div class="unit-topics">Solving systems by graphing · Solving systems by substitution · Solving systems by elimination · Special systems · Solving linear inequalities · Systems of linear inequalities</div>
+    </a>
+
+    <a href="unit_07.html" class="unit-card">
+      <div class="unit-accent a-navy"></div>
+      <div class="unit-num">UNIT 07 · Ch. 7</div>
+      <div class="unit-title">Exponents &amp; Polynomials</div>
+      <div class="unit-topics">Integer exponents · Powers of 10 &amp; scientific notation · Multiplication properties of exponents · Division properties of exponents · Rational exponents · Polynomials · Adding &amp; subtracting polynomials · Multiplying polynomials · Special products of binomials</div>
+    </a>
+
+    <a href="unit_08.html" class="unit-card">
+      <div class="unit-accent a-brown"></div>
+      <div class="unit-num">UNIT 08 · Ch. 8</div>
+      <div class="unit-title">Factoring Polynomials</div>
+      <div class="unit-topics">Factors &amp; greatest common factors · Factoring by GCF · Factoring x² + bx + c · Factoring ax² + bx + c · Factoring special products · Choosing a factoring method</div>
+    </a>
+
+    <a href="unit_09.html" class="unit-card">
+      <div class="unit-accent a-rose"></div>
+      <div class="unit-num">UNIT 09 · Ch. 9</div>
+      <div class="unit-title">Quadratic Functions &amp; Equations</div>
+      <div class="unit-topics">Identifying quadratic functions · Axis of symmetry &amp; vertex · Graphing &amp; transforming quadratic functions · Solving by graphing · Solving by factoring · Solving by square roots · Completing the square · The quadratic formula</div>
+    </a>
+
+    <a href="unit_10.html" class="unit-card">
+      <div class="unit-accent a-indigo"></div>
+      <div class="unit-num">UNIT 10 · Ch. 10</div>
+      <div class="unit-title">Data Analysis &amp; Probability</div>
+      <div class="unit-topics">Organizing &amp; displaying data · Frequency &amp; histograms · Data distributions · Misleading graphs &amp; statistics · Experimental probability · Theoretical probability · Independent &amp; dependent events · Combinations &amp; permutations</div>
+    </a>
+
+    <a href="unit_11.html" class="unit-card">
+      <div class="unit-accent a-lime"></div>
+      <div class="unit-num">UNIT 11 · Ch. 11</div>
+      <div class="unit-title">Exponential &amp; Radical Functions</div>
+      <div class="unit-topics">Geometric sequences · Exponential functions · Exponential growth &amp; decay · Linear, quadratic &amp; exponential models · Square-root functions · Radical expressions · Adding, subtracting, multiplying &amp; dividing radical expressions · Solving radical equations</div>
+    </a>
+
+    <a href="unit_12.html" class="unit-card">
+      <div class="unit-accent a-coral"></div>
+      <div class="unit-num">UNIT 12 · Ch. 12</div>
+      <div class="unit-title">Rational Functions &amp; Equations</div>
+      <div class="unit-topics">Inverse variation · Rational functions · Simplifying rational expressions · Multiplying &amp; dividing rational expressions · Adding &amp; subtracting rational expressions · Dividing polynomials · Solving rational equations</div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ===== RESOURCES ===== -->
+<div id="resources" class="section">
+  <div class="sec-label">Notes &amp; Handouts</div>
+  <div class="rlist">
+    <a class="ritem" href="graphing_calculator_tips.pdf" target="_blank" style="border-color:#2980b9">
+      <div class="rico" style="background:#2980b9">PDF</div>
+      <div class="rinfo">
+        <div class="rname">Graphing Calculator Tips &amp; Tricks</div>
+        <div class="rmeta">43-page guide · MODE key · graphing · solving equations &amp; systems · factoring · inequalities · scientific notation · resetting the calculator</div>
+      </div>
+      <div class="rtag" style="border-color:#2980b9;color:#2980b9">Calculator</div>
+    </a>
+    <div class="ritem"><div class="rico">PDF</div><div class="rinfo"><div class="rname">Additional resources will be added here throughout the year.</div><div class="rmeta">Check back regularly for notes, worksheets, and handouts.</div></div></div>
+  </div>
+</div>
+
+<!-- ===== GRAPHING CALCULATOR ===== -->
+<div id="calculator" class="section">
+  <div class="sec-label">Graphing Calculator Resources</div>
+  <div class="rlist">
+    <a class="ritem" href="https://www.desmos.com/calculator" target="_blank" style="border-color:#2980b9">
+      <div class="rico" style="background:#2980b9">🔷</div>
+      <div class="rinfo">
+        <div class="rname">Desmos Graphing Calculator</div>
+        <div class="rmeta">Free online graphing calculator · Create and explore functions, equations, and graphs</div>
+      </div>
+      <div class="rtag" style="border-color:#2980b9;color:#2980b9">Online</div>
+    </a>
+    <a class="ritem" href="https://www.cemetech.net/emulators/ti84.php" target="_blank" style="border-color:#c0392b">
+      <div class="rico" style="background:#c0392b">💻</div>
+      <div class="rinfo">
+        <div class="rname">TI-84 Plus CE Emulator</div>
+        <div class="rmeta">Browser-based TI-84 emulator · Practice with the calculator you use on the exam</div>
+      </div>
+      <div class="rtag" style="border-color:#c0392b;color:#c0392b">Emulator</div>
+    </a>
+  </div>
+</div>
+
+<!-- ===== REGENTS ===== -->
+<div id="regents" class="section">
+  <div class="sec-label">Regents Resources</div>
+  <div class="reg-intro"><strong>Algebra I Regents Exam</strong> — Past exams from <strong>JMAP.org</strong>. Video walkthroughs from <strong>vinteachesmath</strong> on YouTube. Exams go back to June 2022, the earliest with full video coverage.</div>
+  <div class="sec-label">Reference</div>
+  <div class="rlist">
+    <a class="ritem" href="https://www.jmap.org/JMAP_REGENTS_EXAMS.htm" target="_blank"><div class="rico" style="background:#1a3a5c">WEB</div><div class="rinfo"><div class="rname">JMAP.org — Full Algebra I Exam Archive</div><div class="rmeta">All years, PDFs, answer keys, and scoring guides</div></div><div class="rtag">JMAP</div></a>
+    <div class="ritem"><div class="rico" style="background:#1a3a5c">PDF</div><div class="rinfo"><div class="rname">NYS Algebra I Reference Sheet</div><div class="rmeta">Official formula sheet provided on exam day</div></div><div class="rtag">Official</div></div>
+  </div>
+  <div class="sec-label">Past Exams — PDF + Video Solutions</div>
+  <table class="etable">
+    <thead><tr><th>Exam</th><th>JMAP PDF</th><th>vinteachesmath Video</th></tr></thead>
+    <tbody>
+      <tr><td><strong>June 2025</strong></td><td><div class="elinks"><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/0625ExamAI.pdf" target="_blank">Exam</a><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/ExamAnswers/0625ExamAIans.pdf" target="_blank">Answers</a></div></td><td><div class="elinks"><a class="elink eyt" href="https://www.youtube.com/watch?v=4BFu1Kk38s0" target="_blank">Full Exam ▶</a></div></td></tr>
+      <tr><td><strong>January 2025</strong></td><td><div class="elinks"><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/0125ExamAI.pdf" target="_blank">Exam</a><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/ExamAnswers/0125ExamAIans.pdf" target="_blank">Answers</a></div></td><td><div class="elinks"><a class="elink eyt" href="https://www.youtube.com/watch?v=k3IJ_u_yN7w" target="_blank">Full Exam ▶</a></div></td></tr>
+      <tr><td><strong>August 2024</strong></td><td><div class="elinks"><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/0824ExamAI.pdf" target="_blank">Exam</a><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/ExamAnswers/0824ExamAIans.pdf" target="_blank">Answers</a></div></td><td><div class="elinks"><a class="elink eyt" href="https://www.youtube.com/watch?v=J3YnxicMPvo" target="_blank">Full Exam ▶</a></div></td></tr>
+      <tr><td><strong>June 2024</strong></td><td><div class="elinks"><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/0624ExamAI.pdf" target="_blank">Exam</a><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/ExamAnswers/0624ExamAIans.pdf" target="_blank">Answers</a></div></td><td><div class="elinks"><a class="elink eyt" href="https://www.youtube.com/watch?v=nw_o-r6AGdY" target="_blank">Full Exam ▶</a></div></td></tr>
+      <tr><td><strong>January 2024</strong></td><td><div class="elinks"><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/0124ExamAI.pdf" target="_blank">Exam</a><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/ExamAnswers/0124ExamAIans.pdf" target="_blank">Answers</a></div></td><td><div class="elinks"><a class="elink eyt" href="https://www.youtube.com/watch?v=CpPEiKsWCnM" target="_blank">Qs 25–37 ▶</a></div></td></tr>
+      <tr><td><strong>August 2023</strong></td><td><div class="elinks"><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/0823ExamAI.pdf" target="_blank">Exam</a><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/ExamAnswers/0823ExamAIans.pdf" target="_blank">Answers</a></div></td><td><div class="elinks"><a class="elink eyt" href="https://www.youtube.com/watch?v=-A-bYDjPDJ4" target="_blank">Qs 25–37 ▶</a></div></td></tr>
+      <tr><td><strong>June 2023</strong></td><td><div class="elinks"><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/0623ExamAI.pdf" target="_blank">Exam</a><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/ExamAnswers/0623ExamAIans.pdf" target="_blank">Answers</a></div></td><td><div class="elinks"><a class="elink eyt" href="https://www.youtube.com/watch?v=gookeksK9Ok" target="_blank">Qs 1–24 ▶</a><a class="elink eyt" href="https://www.youtube.com/watch?v=8aTSYw_sVhc" target="_blank">Qs 25–37 ▶</a></div></td></tr>
+      <tr><td><strong>June 2022</strong></td><td><div class="elinks"><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/0622ExamAI.pdf" target="_blank">Exam</a><a class="elink epdf" href="https://www.jmap.org/JMAPRegentsExamArchives/ALGEBRAIEXAMS/ExamAnswers/0622ExamAIans.pdf" target="_blank">Answers</a></div></td><td><div class="elinks"><a class="elink eyt" href="https://www.youtube.com/watch?v=dLQA-uFifec" target="_blank">Qs 1–24 ▶</a><a class="elink eyt" href="https://www.youtube.com/watch?v=3vwrNv8sRko" target="_blank">Qs 25–37 ▶</a></div></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== MATH CLUB ===== -->
+<div id="club" class="section">
+  <div class="sec-label">Math Club</div>
+  <div class="club-intro"><strong>Welcome to Math Club!</strong> We compete in <strong>MATHCOUNTS</strong> (a national middle school competition with Sprint, Target, Team, and Countdown rounds) and <strong>MOEMS</strong> (Math Olympiads for Elementary and Middle Schools — 5 monthly contests per year). Use the practice materials below to sharpen your skills.</div>
+  <div class="sec-label">MATHCOUNTS — Official Resources</div>
+  <div class="rlist">
+    <a class="ritem" href="https://www.mathcounts.org/resources/past-competitions" target="_blank"><div class="rico" style="background:#27ae60">WEB</div><div class="rinfo"><div class="rname">MATHCOUNTS Official Past Competitions</div><div class="rmeta">mathcounts.org · Most recent year always free</div></div><div class="rtag">Official</div></a>
+    <a class="ritem" href="https://www.mathcounts.org/resources" target="_blank"><div class="rico" style="background:#27ae60">WEB</div><div class="rinfo"><div class="rname">MATHCOUNTS Resources Hub</div><div class="rmeta">Practice problems, games, and club materials</div></div><div class="rtag">Official</div></a>
+  </div>
+  <div class="sec-label">MATHCOUNTS — Past Competitions (2022–2026)</div>
+  <table class="etable">
+    <thead><tr><th>Year</th><th>School Level</th><th>Chapter Level</th><th>State Level</th></tr></thead>
+    <tbody>
+      <tr><td><strong>2026</strong></td><td>—</td><td><div class="elinks"><a class="elink egr" href="https://drive.google.com/file/d/19-q0hz5rdh7bw83g-tr8yAOqjlD_L2HU/view" target="_blank">Sprint</a><a class="elink egr" href="https://drive.google.com/file/d/1R21jWVRRve4R0f9efaNgGroB8sqqtoSp/view" target="_blank">Target</a><a class="elink egr" href="https://drive.google.com/file/d/1-OcrSfqGpoEf4TNlJWHsA_-hypvxczPC/view" target="_blank">Team</a><a class="elink egr" href="https://drive.google.com/file/d/1rq_kkoHvjUYDxpW7rWsfHZBlrsyB1Dcb/view" target="_blank">Answers</a></div></td><td>—</td></tr>
+      <tr><td><strong>2025</strong></td><td><div class="elinks"><a class="elink egr" href="https://drive.google.com/file/d/1KSdHTMps78yoBZGxljRvq7bb5-SGclpk/view" target="_blank">Sprint</a><a class="elink egr" href="https://drive.google.com/file/d/1HT8xneBkpakO6-gqo_YAms-rWjpoznBg/view" target="_blank">Target</a><a class="elink egr" href="https://drive.google.com/file/d/1fUp3H3s9JsV1q_imYkb0k2CxBPsMQtvS/view" target="_blank">Answers</a></div></td><td><div class="elinks"><a class="elink egr" href="https://drive.google.com/file/d/1XKwhhWVy_WG4wTQMv47rFzx_YUkPnt7-/view" target="_blank">Sprint</a><a class="elink egr" href="https://drive.google.com/file/d/1YEImR93ansXKfvt4J_HvESplLdqRKisT/view" target="_blank">Target</a><a class="elink egr" href="https://drive.google.com/file/d/1YJJxYG3ssAKkgDsudFok-lxhM7U96WPhi/view" target="_blank">Answers</a><a class="elink egr" href="https://drive.google.com/file/d/1b5HkRZYbiJ_bhf2hCmPFlE2FSeZk8LdN/view" target="_blank">Solutions</a></div></td><td><div class="elinks"><a class="elink egr" href="https://drive.google.com/file/d/1SiJvIHRIP6EGBEGcS-fEYlQVkLIPahue/view" target="_blank">Sprint</a><a class="elink egr" href="https://drive.google.com/file/d/1DSSb6X2x0mnYPIDq5C9ZaEN6XUBlY6nq/view" target="_blank">Target</a><a class="elink egr" href="https://drive.google.com/file/d/1dPqCy1q9tBh3-iw-8oJT9oLTuuPk_BD-/view" target="_blank">Answers</a><a class="elink egr" href="https://drive.google.com/file/d/10orRthiagxU9iV69y2ADY87QriU_tVCb/view" target="_blank">Solutions</a></div></td></tr>
+      <tr><td><strong>2024</strong></td><td>—</td><td><div class="elinks"><a class="elink egr" href="https://drive.google.com/file/d/1vRLaP3gjSjiRMOQ_ppYHL3dJkPOObNTy/view" target="_blank">Sprint</a><a class="elink egr" href="https://drive.google.com/file/d/10CjjajAGn-nSYgF2sUVAJIn7E9CyUmNM/view" target="_blank">Target</a><a class="elink epdf" href="https://www.mathcounts.org/sites/default/files/Chapter%20Solutions%20for%20posting.pdf" target="_blank">Solutions</a></div></td><td>—</td></tr>
+      <tr><td><strong>2023</strong></td><td>—</td><td><div class="elinks"><a class="elink egr" href="https://www.mathcounts.org/sites/default/files/2023%20Chapter%20Competition%20Sprint%20Round.pdf" target="_blank">Sprint</a></div></td><td>—</td></tr>
+      <tr><td><strong>2022</strong></td><td>—</td><td><div class="elinks"><a class="elink egr" href="https://www.mathcounts.org/resources/past-competitions" target="_blank">Past Competitions ↗</a></div></td><td>—</td></tr>
+    </tbody>
+  </table>
+  <div class="sec-label">MOEMS — Math Olympiad for Middle Schools</div>
+  <div class="rlist">
+    <a class="ritem" href="https://www.moems.org/" target="_blank"><div class="rico" style="background:#8e44ad">WEB</div><div class="rinfo"><div class="rname">MOEMS Official Website</div><div class="rmeta">moems.org · Contest info, enrollment, and resources</div></div><div class="rtag">Official</div></a>
+    <a class="ritem" href="https://moems.org/zinger/" target="_blank"><div class="rico" style="background:#8e44ad">WEB</div><div class="rinfo"><div class="rname">MOEMS Problem of the Week</div><div class="rmeta">Free weekly problems · great for warm-ups and club meetings</div></div><div class="rtag">Free</div></a>
+    <a class="ritem" href="https://moems.org/wp-content/uploads/2021/10/SampleM.pdf" target="_blank"><div class="rico" style="background:#8e44ad">PDF</div><div class="rinfo"><div class="rname">MOEMS Sample Contest — Division M (Middle School)</div><div class="rmeta">Official free sample · shows exact contest format</div></div><div class="rtag">Sample</div></a>
+    <a class="ritem" href="https://www.moems.org/pages/resources" target="_blank"><div class="rico" style="background:#8e44ad">WEB</div><div class="rinfo"><div class="rname">MOEMS Resources Page</div><div class="rmeta">Sample contests, problem books, and enrollment info</div></div><div class="rtag">Official</div></a>
+    <div class="ritem" style="background:#f9f6f0;border-color:#8e44ad"><div class="rico" style="background:#8e44ad">📖</div><div class="rinfo"><div class="rname">MOEMS Contest Problems Books (Vols. 1–4)</div><div class="rmeta">Hundreds of past problems with solutions · available for purchase at moems.org/store</div></div><div class="rtag">Book</div></div>
+  </div>
+</div>
+
+<!-- ===== FORMULAS ===== -->
+<div id="formulas" class="section">
+  <div class="sec-label">Formula Reference Sheet</div>
+
+  <div class="formula-section">
+    <div class="formula-section-title">Ch. 1–2 · Foundations &amp; Equations</div>
+    <div class="fgrid">
+      <div class="fitem"><div class="fname">Order of Operations (PEMDAS)</div><div class="feq">P → E → MD → AS</div><div class="fnote">Parentheses, Exponents, Multiply/Divide, Add/Subtract</div></div>
+      <div class="fitem"><div class="fname">Distributive Property</div><div class="feq">a(b + c) = ab + ac</div></div>
+      <div class="fitem"><div class="fname">Simple Interest</div><div class="feq">I = Prt</div><div class="fnote">P = principal, r = rate, t = time</div></div>
+      <div class="fitem"><div class="fname">Absolute Value</div><div class="feq">|x| = x if x ≥ 0<br>|x| = −x if x &lt; 0</div></div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <div class="formula-section-title">Ch. 5 · Linear Functions</div>
+    <div class="fgrid">
+      <div class="fitem"><div class="fname">Slope</div><div class="feq">m = (y₂ − y₁) / (x₂ − x₁)</div></div>
+      <div class="fitem"><div class="fname">Slope-Intercept Form</div><div class="feq">y = mx + b</div><div class="fnote">m = slope, b = y-intercept</div></div>
+      <div class="fitem"><div class="fname">Point-Slope Form</div><div class="feq">y − y₁ = m(x − x₁)</div></div>
+      <div class="fitem"><div class="fname">Standard Form</div><div class="feq">Ax + By = C</div><div class="fnote">A, B, C are real numbers; A &amp; B not both 0</div></div>
+      <div class="fitem"><div class="fname">Distance Formula</div><div class="feq">d = √((x₂−x₁)² + (y₂−y₁)²)</div></div>
+      <div class="fitem"><div class="fname">Midpoint Formula</div><div class="feq">M = ((x₁+x₂)/2, (y₁+y₂)/2)</div></div>
+      <div class="fitem"><div class="fname">Direct Variation</div><div class="feq">y = kx</div><div class="fnote">k = constant of variation</div></div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <div class="formula-section-title">Ch. 7 · Exponents &amp; Polynomials</div>
+    <div class="fgrid">
+      <div class="fitem"><div class="fname">Zero Exponent</div><div class="feq">x⁰ = 1</div><div class="fnote">x ≠ 0</div></div>
+      <div class="fitem"><div class="fname">Negative Exponent</div><div class="feq">x⁻ⁿ = 1/xⁿ</div><div class="fnote">x ≠ 0</div></div>
+      <div class="fitem"><div class="fname">Product of Powers</div><div class="feq">xᵃ · xᵇ = xᵃ⁺ᵇ</div></div>
+      <div class="fitem"><div class="fname">Quotient of Powers</div><div class="feq">xᵃ / xᵇ = xᵃ⁻ᵇ</div><div class="fnote">x ≠ 0</div></div>
+      <div class="fitem"><div class="fname">Power of a Power</div><div class="feq">(xᵃ)ᵇ = xᵃᵇ</div></div>
+      <div class="fitem"><div class="fname">Power of a Product</div><div class="feq">(xy)ⁿ = xⁿyⁿ</div></div>
+      <div class="fitem"><div class="fname">Rational Exponent</div><div class="feq">x^(1/n) = ⁿ√x</div></div>
+      <div class="fitem"><div class="fname">Scientific Notation</div><div class="feq">a × 10ⁿ</div><div class="fnote">1 ≤ a &lt; 10, n is an integer</div></div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <div class="formula-section-title">Ch. 8 · Factoring</div>
+    <div class="fgrid">
+      <div class="fitem"><div class="fname">Factoring by GCF</div><div class="feq">ab + ac = a(b + c)</div></div>
+      <div class="fitem"><div class="fname">Difference of Squares</div><div class="feq">a² − b² = (a+b)(a−b)</div></div>
+      <div class="fitem"><div class="fname">Perfect Square Trinomial</div><div class="feq">a² + 2ab + b² = (a+b)²<br>a² − 2ab + b² = (a−b)²</div></div>
+      <div class="fitem"><div class="fname">Trinomial (a=1)</div><div class="feq">x² + bx + c = (x+p)(x+q)</div><div class="fnote">where p + q = b and p · q = c</div></div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <div class="formula-section-title">Ch. 9 · Quadratic Functions &amp; Equations</div>
+    <div class="fgrid">
+      <div class="fitem"><div class="fname">Standard Form (Quadratic)</div><div class="feq">y = ax² + bx + c</div><div class="fnote">a ≠ 0</div></div>
+      <div class="fitem"><div class="fname">Axis of Symmetry</div><div class="feq">x = −b / (2a)</div></div>
+      <div class="fitem"><div class="fname">Vertex</div><div class="feq">(−b/2a,  f(−b/2a))</div></div>
+      <div class="fitem"><div class="fname">Quadratic Formula</div><div class="feq">x = (−b ± √(b²−4ac)) / 2a</div></div>
+      <div class="fitem"><div class="fname">Discriminant</div><div class="feq">b² − 4ac</div><div class="fnote">&gt;0: two real solutions; =0: one; &lt;0: none</div></div>
+      <div class="fitem"><div class="fname">Completing the Square</div><div class="feq">x² + bx + (b/2)² = (x + b/2)²</div></div>
+      <div class="fitem"><div class="fname">Constant Acceleration</div><div class="feq">d = vt + ½at²</div><div class="fnote">d = distance, v = starting velocity, a = acceleration</div></div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <div class="formula-section-title">Ch. 10 · Data Analysis &amp; Probability</div>
+    <div class="fgrid">
+      <div class="fitem"><div class="fname">Theoretical Probability</div><div class="feq">P(E) = favorable outcomes / total outcomes</div></div>
+      <div class="fitem"><div class="fname">Experimental Probability</div><div class="feq">P(E) = times event occurs / total trials</div></div>
+      <div class="fitem"><div class="fname">Complement</div><div class="feq">P(not E) = 1 − P(E)</div></div>
+      <div class="fitem"><div class="fname">Independent Events</div><div class="feq">P(A and B) = P(A) · P(B)</div></div>
+      <div class="fitem"><div class="fname">Permutations</div><div class="feq">nPr = n! / (n−r)!</div></div>
+      <div class="fitem"><div class="fname">Combinations</div><div class="feq">nCr = n! / (r!(n−r)!)</div></div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <div class="formula-section-title">Ch. 11 · Exponential &amp; Radical Functions</div>
+    <div class="fgrid">
+      <div class="fitem"><div class="fname">Geometric Sequence (nth term)</div><div class="feq">aₙ = aₙ₋₁ · r</div><div class="fnote">r = common ratio</div></div>
+      <div class="fitem"><div class="fname">Geometric Sequence (explicit)</div><div class="feq">aₙ = a₁ · r��⁻¹</div></div>
+      <div class="fitem"><div class="fname">Exponential Growth</div><div class="feq">y = a(1 + r)ᵗ</div><div class="fnote">a = initial amount, r = growth rate, t = time</div></div>
+      <div class="fitem"><div class="fname">Exponential Decay</div><div class="feq">y = a(1 − r)ᵗ</div><div class="fnote">a = initial amount, r = decay rate, t = time</div></div>
+      <div class="fitem"><div class="fname">Product Property of Radicals</div><div class="feq">√(ab) = √a · √b</div></div>
+      <div class="fitem"><div class="fname">Quotient Property of Radicals</div><div class="feq">√(a/b) = √a / √b</div><div class="fnote">b ≠ 0</div></div>
+      <div class="fitem"><div class="fname">Pythagorean Theorem</div><div class="feq">a² + b² = c²</div><div class="fnote">c = hypotenuse</div></div>
+    </div>
+  </div>
+
+  <div class="formula-section">
+    <div class="formula-section-title">Ch. 12 · Rational Functions &amp; Equations</div>
+    <div class="fgrid">
+      <div class="fitem"><div class="fname">Inverse Variation</div><div class="feq">y = k/x  or  xy = k</div><div class="fnote">k = constant of variation, x ≠ 0</div></div>
+      <div class="fitem"><div class="fname">Rational Function (general)</div><div class="feq">f(x) = p(x) / q(x)</div><div class="fnote">q(x) ≠ 0</div></div>
+      <div class="fitem"><div class="fname">Multiplying Rational Expressions</div><div class="feq">(a/b) · (c/d) = ac/bd</div></div>
+      <div class="fitem"><div class="fname">Dividing Rational Expressions</div><div class="feq">(a/b) ÷ (c/d) = (a/b) · (d/c)</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== CONTACT ===== -->
+<div id="contact" class="section">
+  <div class="sec-label">Get in Touch</div>
+  <div class="cgrid">
+    <div class="ccard"><div class="cicon">✉</div><div class="clabel">Email</div><div class="cval">tbuckley@schools.nyc.gov</div></div>
+    <div class="ccard"><div class="cicon">🕒</div><div class="clabel">Office Hours</div><div class="cval">Mon &amp; Tue, 12:45–1:30 PM</div></div>
+    <div class="ccard"><div class="cicon">🚪</div><div class="clabel">Room</div><div class="cval">Room 427</div></div>
+  </div>
+</div>
+
+<footer>
+  <span>Algebra 1 · 8th Grade · Mr. Buckley</span>
+  <span>2025–2026 School Year</span>
+</footer>
+
+</div><!-- end .site -->
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
 </body>
 </html>
